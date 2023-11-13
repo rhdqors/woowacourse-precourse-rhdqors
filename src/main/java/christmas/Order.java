@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Order { // 고객 주문 관련 주문한 메뉴, 수량 등
-    private HashMap<String, Integer> orderMenus = new HashMap<>();
+    public static final HashMap<String, Integer> orderMenus = new HashMap<>();
     private final InputView inputView;
 
     public Order(InputView inputView) {

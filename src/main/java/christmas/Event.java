@@ -1,6 +1,18 @@
 package christmas;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class Event {
+
+    private final Order order;
+
+    public Event(Order order) {
+        this.order = order;
+    }
     /*
     이벤트 목록
     1. 크리스마스 디데이 할인
@@ -13,12 +25,66 @@ public class Event {
     6. 디데이 할인(1번) 제외 2~5번은 31일까지 적용
      */
 
-    private boolean isService = false;
+    private boolean isChampaneService;
+    private boolean isWeekend;
 
-    public boolean serviceCheck(int allPrice) {
-        if(allPrice >= 120000) {
-            isService = true;
+    public boolean serviceChampaneCheck(int allPrice) {
+        if(allPrice >= EventPrice.CHAMPAGNE_SERVICE.getPrice()) {
+            isChampaneService = true;
         }
-        return isService;
+        return isChampaneService;
     }
+
+    public int dDayDiscount() {
+        int firstDiscount = EventPrice.D_DAY_BASIC_DISCOUNT.getPrice();
+        int discount = EventPrice.D_DAY_DISCOUNT.getPrice();
+
+        return firstDiscount + (InputView.date-1) * discount;
+    }
+
+    public void checkWeekend(int day) {
+        LocalDate date = LocalDate.of(2023, 12, 1); // 12월 1일 설정
+        LocalDate endOfMonth = LocalDate.of(2023, 12, 31); // 12월의 마지막 날 설정
+        List<Integer> weekends = new ArrayList<>();
+        isWeekend = true;
+
+        while (!date.isAfter(endOfMonth)) {
+            DayOfWeek dayOfWeek = date.getDayOfWeek();
+            if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                weekends.add(Integer.parseInt(date.toString().substring(date.toString().length()-2, date.toString().length()))-1);
+            }
+            date = date.plusDays(1);
+        }
+        System.out.println("weekends = " + weekends);
+
+        if(!weekends.contains(day)) {
+            isWeekend = false;
+        }
+    }
+
+    public int dailyDiscount(String category) {
+        checkWeekend(InputView.date);
+        System.out.println("isWeekend = " + isWeekend);
+        int discount = 0;
+
+        for (Map.Entry<String, Integer> entry : Order.orderMenus.entrySet()) {
+            if(MenuPrice.allMenus.containsKey(entry.getKey()) && MenuPrice.allMenus.get(entry.getKey()).equals(category)) {
+                discount += (2023 * entry.getValue());
+            }
+        }
+        return discount;
+    }
+
+    public int weekendDiscount() {
+        return dailyDiscount("메인");
+    }
+
+    public int weekDayDiscount() {
+        return dailyDiscount("디저트");
+    }
+
+    public boolean isWeekend() {
+        return this.isWeekend;
+    }
+
 }

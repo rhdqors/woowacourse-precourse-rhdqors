@@ -1,5 +1,7 @@
 package christmas;
 
+import java.util.HashMap;
+
 public enum MenuPrice {
     // 애피타이저
     MUSHROOM_SOUP("양송이수프", 6000),
@@ -23,6 +25,7 @@ public enum MenuPrice {
 
     private final String name;
     private final int price;
+    public static final HashMap<String, String> allMenus = new HashMap<>();
 
     MenuPrice(String name, int price) {
         this.name = name;
@@ -40,6 +43,21 @@ public enum MenuPrice {
         for (MenuPrice item : MenuPrice.values())
             if (item.getName().equals(name)) return item;
         return null;
+    }
+
+    public static void saveAllMenus() {
+        allMenus.put(MUSHROOM_SOUP.name, "애피타이저");
+        allMenus.put(TAPAS.name, "애피타이저");
+        allMenus.put(CAAESAR_SALAD.name, "애피타이저");
+        allMenus.put(T_BONE_STEAK.name, "메인");
+        allMenus.put(BBQ_RIBS.name, "메인");
+        allMenus.put(SEAFOOD_PASTA.name, "메인");
+        allMenus.put(CHRISTMAS_PASTA.name, "메인");
+        allMenus.put(CHOCOLATE_CAKE.name, "디저트");
+        allMenus.put(ICE_CREAM.name, "디저트");
+        allMenus.put(ZERO_COKE.name, "음료");
+        allMenus.put(RED_WINE.name, "음료");
+        allMenus.put(CHAMPAGNE.name, "음료");
     }
 
 }

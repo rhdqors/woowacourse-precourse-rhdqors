@@ -20,6 +20,7 @@ public class OutputView {
         inputView.inputDate();
         printMenu();
         printAllPriceAndService();
+        showEventList();
     }
 
     private void printMenu() {
@@ -29,10 +30,10 @@ public class OutputView {
             System.out.println(entry.getKey() + " " +  entry.getValue() + "개");
         }
     }
-    // 티본스테이크-1,바비큐립-1,초코케이크-2,제로콜라-1
+
     private void printAllPriceAndService() {
         int allPrice = order.savePriceBeforeDiscount();
-        boolean isService = event.serviceCheck(allPrice);
+        boolean isService = event.serviceChampaneCheck(allPrice);
         String result = "";
 
         System.out.println("<할인 전 총주문 금액>");
@@ -48,14 +49,24 @@ public class OutputView {
     }
 
     private void showEventList() {
+        String dDay = String.format("크리스마스 디데이 할인: -%,d원", event.dDayDiscount());
+        String dailyDiscount = String.format("평일 할인: -%,d원", event.weekDayDiscount());
+        if(event.isWeekend()) {
+            dailyDiscount = String.format("주말 할인: -%,d원", event.weekendDiscount());
+        }
+
         System.out.println("<혜택 내역>");
+        System.out.println(dDay);
+        System.out.println(dailyDiscount);
+        System.out.println();
+        System.out.println();
+
         /*
         크리스마스 디데이 할인: -1,200원 -> 1일부터 천원 기준 100원씩 추가
         주말 or 평일 할인
         특별 할인: -1,000원 -> 달력에 별모양
         증정 이벤트: -25,000원 -> 총 주문 12만원 이상 샴페인
          */
-
     }
 
 
