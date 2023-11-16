@@ -21,6 +21,7 @@ public class OutputView {
 
     public void excuteOrder() {
         inputView.inputDate();
+//        inputView.inputMenu();
         printMenu();
         printAllPriceAndService();
         calculateEvent();
