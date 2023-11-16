@@ -9,15 +9,22 @@ public class Application {
     }
 
     private void run() {
+        MenuPrice.saveAllMenus();
         output.excuteOrder();
     }
 
     public static void main(String[] args) {
         InputView input = new InputView();
-        Menu menu = new Menu(input);
-        OutputView output = new OutputView(input, menu);
+        Order order = new Order(input);
+        Event event = new Event();
+        OutputView output = new OutputView(input, order, event);
         Application app = new Application(output);
 
-        app.run();
+        try {
+            app.run();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
+
 }
