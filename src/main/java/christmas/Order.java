@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Order { // 고객 주문 관련 주문한 메뉴, 수량 등
+public class Order {
     public static final HashMap<String, Integer> orderMenus = new HashMap<>();
     private final InputView inputView;
 
@@ -13,11 +13,13 @@ public class Order { // 고객 주문 관련 주문한 메뉴, 수량 등
     }
 
     public HashMap<String, Integer> saveOrderMenu() {
-        List<String> menus = List.of(inputView.inputMenu().split(","));
+        String input = inputView.inputMenu().replace(" ", "");
+        List<String> menus = List.of(input.split(","));
 
         for (String menu : menus) {
-            String key = menu.split("-")[0];
-            int value = Integer.parseInt(menu.split("-")[1]);
+            String[] parts = menu.split("-");
+            String key = parts[0];
+            int value = Integer.parseInt(parts[1]);
             orderMenus.put(key, value);
         }
         return orderMenus;
