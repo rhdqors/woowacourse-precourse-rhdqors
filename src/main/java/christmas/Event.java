@@ -7,23 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Event {
-//    private final Order order;
-//    public boolean isService;
     private boolean isChampaneService;
     private boolean isWeekend;
     private final List<Integer> weekends = new ArrayList<>();
     private final List<Integer> specialDays = new ArrayList<>();
-
-//    public Event(Order order) {
-//        this.order = order;
-//    }
-
-//    private void isService() {
-//        int orderPrice = order.savePriceBeforeDiscount();
-//        if(orderPrice >= EventPrice.START_SERVICE.getPrice()) {
-//            isService = true;
-//        }
-//    }
 
     public boolean serviceChampaneCheck(int allPrice) {
         if(allPrice >= EventPrice.CHAMPAGNE_SERVICE.getPrice()) {
@@ -37,6 +24,37 @@ public class Event {
         int discount = EventPrice.D_DAY_DISCOUNT.getPrice();
 
         return firstDiscount + (InputView.date-1) * discount;
+    }
+
+    public int specialDiscount(int date) {
+        int discount = 0;
+        if(specialDays.contains(date)) {
+            discount += EventPrice.SPECIAL_DISCOUNT.getPrice();
+        }
+        return discount;
+    }
+
+    public String badgeDiscount(int totalDiscount) {
+        if (totalDiscount >= EventPrice.SANTA_BADGE.getPrice()) {
+            return "산타";
+        } else if (totalDiscount >= EventPrice.TREE_BADGE.getPrice()) {
+            return "트리";
+        } else if (totalDiscount >= EventPrice.STAR_BADGE.getPrice()) {
+            return "별";
+        }
+        return "없음";
+    }
+
+    public int weekendDiscount() {
+        return dailyDiscount("메인");
+    }
+
+    public int weekDayDiscount() {
+        return dailyDiscount("디저트");
+    }
+
+    public boolean isWeekend() {
+        return this.isWeekend;
     }
 
     private void checkWeekend(int input) {
@@ -53,14 +71,6 @@ public class Event {
                 specialDays.add(day.getDayOfMonth());
             }
         }
-    }
-
-    public int specialDiscount(int date) {
-        int discount = 0;
-        if(specialDays.contains(date)) {
-            discount += EventPrice.SPECIAL_DISCOUNT.getPrice();
-        }
-        return discount;
     }
 
     private void saveWeekends(LocalDate date, LocalDate endOfMonth) {
@@ -83,29 +93,6 @@ public class Event {
             }
         }
         return discount;
-    }
-
-    public String badgeDiscount(int totalDiscount) {
-        if (totalDiscount >= 20000) {
-            return "산타";
-        } else if (totalDiscount >= 10000) {
-            return "트리";
-        } else if (totalDiscount >= 5000) {
-            return "별";
-        }
-        return "없음";
-    }
-
-    public int weekendDiscount() {
-        return dailyDiscount("메인");
-    }
-
-    public int weekDayDiscount() {
-        return dailyDiscount("디저트");
-    }
-
-    public boolean isWeekend() {
-        return this.isWeekend;
     }
 
 }
